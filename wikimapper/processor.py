@@ -130,6 +130,7 @@ def create_index(dumpname: str, path_to_dumps: str, path_to_db: str = None) -> s
             """CREATE TABLE mapping (
             wikipedia_id int PRIMARY KEY ,
             wikipedia_title text,
+            primary_mapping int,
             wikidata_id text)"""
         )
 
@@ -179,7 +180,7 @@ def create_index(dumpname: str, path_to_dumps: str, path_to_db: str = None) -> s
                 # The page property table contains many properties, we only care about the Wikidata id
                 if v[1] == "wikibase_item":
                     c.execute(
-                        "UPDATE mapping SET wikidata_id = ? WHERE wikipedia_id = ?", (v[2], v[0])
+                        "UPDATE mapping SET wikidata_id = ?, primary_mapping = 1 WHERE wikipedia_id = ?", (v[2], v[0])
                     )
     conn.commit()
 
