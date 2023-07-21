@@ -131,6 +131,7 @@ def create_index(dumpname: str, path_to_dumps: str, path_to_db: str = None) -> s
             wikipedia_id int PRIMARY KEY ,
             wikipedia_title text,
             primary_mapping int,
+            redirect int,
             wikidata_id text)"""
         )
 
@@ -152,8 +153,8 @@ def create_index(dumpname: str, path_to_dumps: str, path_to_db: str = None) -> s
                 # https://www.mediawiki.org/wiki/Manual:Namespace
                 if v[1] == "0":
                     c.execute(
-                        "INSERT INTO mapping (wikipedia_id, wikipedia_title) VALUES (?, ?)",
-                        (v[0], v[2]),
+                        "INSERT INTO mapping (wikipedia_id, wikipedia_title, redirect) VALUES (?, ?, ?)",
+                        (v[0], v[2], v[3]),
                     )
 
     conn.commit()
